@@ -61,6 +61,9 @@ const inputDistance = document.querySelector('.form__input--distance');
 const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
+const removeButton = document.querySelector('.remove-workout');
+const removeAll = document.querySelector('.reset_btn');
+
 
 class App {
   #map;
@@ -73,10 +76,19 @@ class App {
 
     // Get data from local storage
     this._getLocalStorage();
+
     //Attach event handler
     form.addEventListener('submit', this._newWorkout.bind(this));
     inputType.addEventListener('change', this._toggleElevationField);
     containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
+    removeAll.addEventListener('click', this.reset)
+    if(removeButton) {
+      return removeButton.addEventListener('click', function(){
+        console.log('hello');
+        containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
+      });
+    }
+
   }
 
   _getPosition() {
@@ -209,6 +221,7 @@ class App {
       workout.id
     }">
     <h2 class="workout__title">${workout.description}</h2>
+    <span class="remove-workout">❌</span>
     <div class="workout__details">
       <span class="workout__icon">${
         workout.type === 'running' ? '🏃‍♂️' : '🚴‍♀️'
@@ -283,6 +296,18 @@ class App {
       this._renderWorkout(work);
       // this._renderWorkoutMarker(work); //not work
     });
+  } 
+
+  removeWorkout(event) {
+    console.log(' iam reoveWorkout');
+
+    window.event.preventDefault()
+    event.stopPropagation().stopPropagation()
+
+
+    // this.#workout.forEach(work => {
+    //   console.log(work);
+    // })
   }
 
   reset() {
