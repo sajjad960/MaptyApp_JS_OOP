@@ -28,7 +28,7 @@ class running extends Workout {
     super(coords, distance, duration);
     this.cadence = cadence;
     this.calcPace();
-    this._setDescription();
+    this._setDescription(); 
   }
   calcPace() {
     this.pace = this.distance / this.duration;
@@ -85,7 +85,6 @@ class App {
     if(removeButton) {
       return removeButton.addEventListener('click', function(){
         console.log('hello');
-        containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
       });
     }
 
@@ -238,7 +237,7 @@ class App {
     if (workout.type === 'running')
       html += `<div class="workout__details">
       <span class="workout__icon">⚡️</span>
-      <span class="workout__value">${workout.pace.toFixed(1)}</span>
+      <span class="workout__value">${workout.pace.toFixed(1)}</span> 
       <span class="workout__unit">min/km</span>
     </div>
     <div class="workout__details">
