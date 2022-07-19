@@ -1,7 +1,7 @@
 'use strict';
-
 // prettier-ignore
 
+// Designed Blue Print for each workout
 class Workout {
   date = new Date();
   id = (Date.now() + '').slice(-10);
@@ -22,19 +22,22 @@ class Workout {
   }
 }
 
+// Running workout extends from Workout
 class running extends Workout {
   type = 'running';
   constructor(coords, distance, duration, cadence) {
     super(coords, distance, duration);
     this.cadence = cadence;
     this.calcPace();
-    this._setDescription(); 
+    this._setDescription();
   }
   calcPace() {
     this.pace = this.distance / this.duration;
     return this.pace;
   }
 }
+
+// Cycling workout extends from Workout
 class cycling extends Workout {
   type = 'cycling';
   constructor(coords, distance, duration, elevationGain) {
@@ -49,11 +52,13 @@ class cycling extends Workout {
     return this.speed;
   }
 }
+
+// Test workouts 🛑
 // const run1 = new running([39, -12], 5.2, 24, 178);
 // const cycling1 = new cycling([39, -12], 27, 95, 528);
 // console.log(run1, cycling1);
 
-/////////////////////////// Application Architecture
+//--------------------   Application Architecture Start--------------------
 const form = document.querySelector('.form');
 const containerWorkouts = document.querySelector('.workouts');
 const inputType = document.querySelector('.form__input--type');
@@ -82,8 +87,8 @@ class App {
     inputType.addEventListener('change', this._toggleElevationField);
     containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
     removeAll.addEventListener('click', this.reset)
-    if(removeButton) {
-      return removeButton.addEventListener('click', function(){
+    if (removeButton) {
+      return removeButton.addEventListener('click', function () {
         console.log('hello');
       });
     }
@@ -99,6 +104,7 @@ class App {
         }
       );
   }
+
   _loadMap(position) {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
@@ -119,6 +125,7 @@ class App {
       this._renderWorkoutMarker(work);
     });
   }
+
   _hideForm() {
     inputDistance.value = inputDuration.value = inputCadence.value = inputElevation.value =
       '';
@@ -126,11 +133,13 @@ class App {
     form.classList.add('hidden');
     setTimeout(() => (form.style.display = 'grid'), 1000);
   }
+
   _showForm(mapE) {
     this.#mapEvent = mapE;
     form.classList.remove('hidden');
     inputDistance.focus();
   }
+
   _toggleElevationField() {
     inputElevation.closest('.form__row').classList.toggle('form__row--hidden');
     inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
@@ -196,6 +205,7 @@ class App {
     this._setLocalStorage();
   }
 
+
   _renderWorkoutMarker(workout) {
     L.marker(workout.coords)
       .addTo(this.#map)
@@ -216,14 +226,12 @@ class App {
 
   _renderWorkout(workout) {
     console.log(workout.type);
-    let html = `<li class="workout workout--${workout.type}" data-id="${
-      workout.id
-    }">
+    let html = `<li class="workout workout--${workout.type}" data-id="${workout.id
+      }">
     <h2 class="workout__title">${workout.description}</h2>
     <span class="remove-workout">❌</span>
     <div class="workout__details">
-      <span class="workout__icon">${
-        workout.type === 'running' ? '🏃‍♂️' : '🚴‍♀️'
+      <span class="workout__icon">${workout.type === 'running' ? '🏃‍♂️' : '🚴‍♀️'
       }</span>
       <span class="workout__value">${workout.distance}</span>
       <span class="workout__unit">km</span>
@@ -280,9 +288,11 @@ class App {
     });
     // workout._clicks();
   }
+
   _setLocalStorage() {
     localStorage.setItem('workouts', JSON.stringify(this.#workout));
   }
+
   _getLocalStorage() {
     const data = JSON.parse(localStorage.getItem('workouts'));
     console.log(data);
@@ -295,7 +305,7 @@ class App {
       this._renderWorkout(work);
       // this._renderWorkoutMarker(work); //not work
     });
-  } 
+  }
 
   removeWorkout(event) {
     console.log(' iam reoveWorkout');
@@ -315,5 +325,6 @@ class App {
   }
 }
 
+// Start Application 
 const app = new App();
 // console.log(app);
